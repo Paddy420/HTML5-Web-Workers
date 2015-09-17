@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Kurzpräsentation Web Workers</title>
+
+		<meta name="description" content="Kurze Einführung in das Multithreading der Webworkers">
+		<meta name="author" content="Patrick Noll">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/night.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+        
+       
+	</head>
+
+	<body>
+        
+		<div class="reveal">
+
+			<div class="slides">
+				<section>
+                    <h1>HTML5: Web Workers</h1>
+                    <h6>von Patrick Noll</h6>
+					
+				</section>
+                
+                <section>
+                    <section id=fragments>
+                    <h1>Agenda:</h1>
+                    <ol>
+                        <li><p class="fragment">Einführung - Web Workers</p></li>
+                        <li><p class="fragment">Was sind Web Workers</p></li>
+                        <li><p class="fragment">Wie funktionieren Web Workers</p></li>
+                        <li><p class="fragment">Interessante Zusatzinformationen</p></li>
+                        <li><p class="fragment">Demo</p></li>
+                    </ol>
+                    </section>
+                </section>
+                
+                <section>
+                    <h2>Einführung - Web Workers</h2>
+                    <ul>
+                        <li><p class="fragment">JavaScript ist eine Single-Threaded-Umgebung</p></li>
+                        <li><p class="fragment">Skriptausführung erfolgt in einem einzigen Thread</p></li>
+                        <li><p class="fragment">durch Beschränkungen bei der JS-Laufzeit in Browsern ist keine Parallelität der Prozesse möglich</p></li>
+                        
+                    </ul>  
+                </section>
+                
+                
+                
+                <section>
+                    <h2>Einführung - Web Workers</h2>
+                    <ul>
+                        <li><p class="fragment">jedoch müssen Websites oft mehrere Aufgaben gleichzeitig erledigen können</p></li>
+                        <li><p class="fragment">z.B. API Daten abfragen, die DOM manipulieren und Benutzeroberflächenereignise abwickeln</p></li>                        
+
+                        <li><p class="fragment">es existieren JS-Befehle die Pseudoparalleilität ermöglichen</p></li>
+                         <li><p class="fragment">HTML5 bietet jedoch bessere Möglichkeiten</p></li>
+                    </ul>                 
+                </section>
+                
+                <section>
+                <h2>Was sind Web Workers</h2>
+                    <ul>
+                    <li><p class="fragment">legen Programmierschnitstelle fest, <span class="fragment">die Hintergund-Skripte erzeugt</span></p></li>                            
+                    <li><p class="fragment">ermöglichen die Ausführung rechenintensiver Skripte ohne die Benutzeroberfläche/andere Skripte daran zu hindern, Interaktionen von Nutzern zu verarbeiten </p></li>
+                    <li><p class="fragment">geben threadähnlich Nachrichten weiter, um Parallelität zu erreichen</p></li>
+                    </ul>
+                </section>
+                
+                
+                
+          <section>
+              <section>     
+                <h2>Wie funktionieren Web Workers</h2>
+                    
+                        <p class="fragment">werden in einem isolierten Thread ausgeführt <span class="fragment">-> ausgeführter Code muss in separater Datei vorhanden sein</span></p>
+              </section>
+                  
+                <section>
+                <h2>Wie funktionieren Web Workers</h2>
+                   
+                       <p>werden in einem isolierten Thread ausgeführt -> ausgeführter Code muss in separater Datei vorhanden sein</p>
+                      <pre><code data-trim contenteditable>var worker = new Worker('WorkerDatei.js');
+                            </code></pre>
+              </section>             
+                </section>
+                
+                <section>
+                <h2>Wie funktionieren Web Workers</h2>
+            
+                    <ul>
+                        <li><p class="fragment">Worker wird asynchron heruntergeladen</p></li>
+                        <li><p class="fragment">beginnt erst wenn er vollständig heruntergeladen und ausgeführt wurde</p></li>
+                        <li><p class="fragment"> mit Befehl <code data-trim contenteditable>.postMessage();</code> Worker starten</p></li>
+                        <li><p class="fragment">Kommunikation zwischen Worker und übergeordneter Seite durch Ereignismodell (<code data-trim contenteditable>onmessage</code>) </p></li>
+                        
+                    </ul>
+                </section>
+                
+                
+              <section>
+                <section>
+                   <h2>Interessante Zusatzinformationen</h2>
+                    
+                    <ul>
+                    <li><p class="fragment">Aufgrund ihres Multithread-Verhaltens können Web Worker nur auf einen Teil der Funktionen von JavaScript zugreifen</p></li>
+                        <li><p class="fragment">Mit <code>importScripts();</code> können externe Scripts in den Worker geladen werden</p></li>
+                    </ul>
+                
+                </section>
+                    
+                 <section>
+                     <h2>Interessante Zusatzinformationen</h2>
+                     <p class="fragment">Untergeordnete Worker</p>
+                     <ul>
+                    <li><p class="fragment">Worker können selbst Worker erzeugen um große Aufgaben weiter zu unterteilen</p></li>
+                     <li><p class="fragment">bringt jedoch einige Nachteile, z.B. erzeugen Browser meist für jeden Worker einen eigenen Prozess -> Ressourcenbeanspruchung</p></li>
+                     </ul>
+                    </section>  
+                    
+                    <section>
+                        <h2>Interessante Zusatzinformationen</h2>
+                        <p class="fragment">Inline-Worker</p>
+                        <ul>
+                    <li><p class="fragment">Wenn man spontan ein Worker-Skript erzeugen oder eine eigenständige Seite ohne separate Worker erzeugen will</p></li>
+                    <li><p class="fragment">mittels sogenanntem BlobBuilder kann der Workercode an die HTML-Seite angehängt werden </p></li>
+                        </ul>
+                        
+                    </section>
+                </section>
+                
+                
+                
+                <section>
+                <section>
+                <h2>Demo</h2>
+              
+ <p>Hauptskript:</p>
+<pre><code>
+<button onclick="sayHI()">Hallo sagen</button>
+<button onclick="unknownCmd()">Send unknown command</button>
+<button onclick="stop()">Stop worker</button>
+<output id="result"></output>
+
+<script>
+  function sayHI() {
+    worker.postMessage({'cmd': 'start', 'msg': 'Hallo!'});
+  }
+
+  function stop() {
+    // Beenden auch mit worker.terminate() im Hauptscript möglich. 
+    worker.postMessage({'cmd': 'stop', 'msg': 'Tschüss!'});
+  }
+
+  function unknownCmd() {
+    worker.postMessage({'cmd': 'unbekannt', 'msg': 'Hääää???'});
+  }
+
+  var worker = new Worker('doWork.js');
+
+  worker.onmessage = function(e) {
+    document.getElementById('result').textContent =  e.data;
+  };
+  </script>
+  </code></pre>
+                    
+                </section>
+                
+                
+                <section>
+                    
+<p>Worker:</p>
+ <pre><code data-trim contenteditable>
+self.onmessage = function(e) {
+  var data = e.data;
+  switch (data.cmd) {
+    case 'start':
+      self.postMessage('Worker gestartet: ' + data.msg);
+      break;
+    case 'stop':
+      self.postMessage('Worker gestoppt: ' + data.msg + ' (Buttons funktionieren nicht mehr)');
+      self.close(); // Beendet den Worker.
+      break;
+    default:
+      self.postMessage('Unbekannter Befehl: ' + data.msg);
+  };
+};
+</code></pre>
+                    
+                    
+                </section>
+                </section>
+              
+
+                
+            <section>
+<button onclick="sayHI()">Hallo sagen</button>
+<button onclick="unknownCmd()">Send unknown command</button>
+<button onclick="stop()">Stop worker</button>
+<output id="result"></output>
+
+<script>
+  function sayHI() {
+    worker.postMessage({'cmd': 'start', 'msg': 'Hallo!'});
+  }
+
+  function stop() {
+    // Beenden auch mit worker.terminate() im Hauptscript möglich. 
+    worker.postMessage({'cmd': 'stop', 'msg': 'Tschüss!'});
+  }
+
+  function unknownCmd() {
+    worker.postMessage({'cmd': 'unbekannt', 'msg': 'Hääää???'});
+  }
+
+  var worker = new Worker('doWork.js');
+
+  worker.onmessage = function(e) {
+    document.getElementById('result').textContent =  e.data;
+  };
+  </script>
+                </section>
+                
+
+                
+<section data-background="http://www.gifmania.com.de/Animierte-Gifs-Animierten-Buchstaben/Bilder-Satzzeichen/Gif-Animationen-Fragezeichen/Fragezeichen-26286.gif" data-background-repeat="repeat" data-background-size="100px" data-background-transition="zoom">
+						<h2>Noch Fragen?</h2>
+                </section>
+				
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+                
+				transition: 'convex', // none/fade/slide/convex/concave/zoom
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+            
+            Reveal.addEventListener( 'some', function() {
+          
+                    var tmpl = document.querySelector('template');
+                    var host = document.querySelector('.custom-component');
+                    var root = host.createShadowRoot();
+                    root.appendChild(document.importNode(tmpl.content, true));
+}, false );
+		</script>
+
+	</body>
+</html>
